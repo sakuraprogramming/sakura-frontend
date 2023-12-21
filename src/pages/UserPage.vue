@@ -1,0 +1,36 @@
+<template>
+  <template v-if="user">
+    <van-cell title="当前的用户" :value="user?.username"/>
+    <van-cell title="修改信息" to="/user/update" is-link/>
+    <van-cell title="我创建的队伍" to="/user/team/create" is-link/>
+    <van-cell title="我加入的队伍" to="/user/team/join" is-link/>
+  </template>
+</template>
+
+<script setup lang="ts">
+import {useRouter} from "vue-router";
+import {onMounted, ref} from "vue";
+import {getCurrentUser} from "../services/user.ts";
+
+const user = ref();
+const router = useRouter();
+onMounted(async () => {
+  user.value = await getCurrentUser();
+})
+const toEdit = (editKey: string, editName: string, currentValue: string) => {
+  router.push({
+    path: '/user/edit',
+    query: {
+      editKey,
+      currentValue,
+      editName
+    }
+  })
+}
+
+</script>
+
+
+<style scoped>
+
+</style>
